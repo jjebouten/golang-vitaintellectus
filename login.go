@@ -1,16 +1,15 @@
 package main
 
 import (
-	"log"
 	"net/http"
 )
 
-type user struct {
-	uid      int
-	username string
-	role     int
+type medewerker struct {
+	Naam      string
+	DatumInDienst string
 }
 
+var Loginsession = 0
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "Login", nil)
@@ -22,28 +21,35 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 		Pusername := r.FormValue("username")
 		Ppassword := r.FormValue("password")
 
-		selDB, err := db.Query("SELECT uid, username, password, role FROM user WHERE username=? AND password=?", Pusername, Ppassword)
+		selDB, err := db.Query("SELECT naam, datum_in_dienst FROM medewerker WHERE naam=? AND datum_in_dienst=?", Pusername, Ppassword)
 		if err != nil {
 			panic(err.Error())
 		}
 
-		user := user{}
+		medewerker := medewerker{}
 		for selDB.Next() {
-			var uid, role int
-			var username, password string
-			err = selDB.Scan(&uid, &username, &password, &role)
+			var naam, datum_in_dienst string
+			err = selDB.Scan(&naam, &datum_in_dienst)
 			if err != nil {
 				panic(err.Error())
 			}
-			user.uid = uid
-			user.username = username
-			user.role = role
-			log.Println(user)
+			medewerker.Naam = naam
+			medewerker.DatumInDienst = datum_in_dienst
+
+			Loginsession = 1
+
 		}
 
 	}
-
-
 	defer db.Close()
-	http.Redirect(w, r, "/", 302)
+
+	if v := Loginsession; v == 1 {
+		http.Redirect(w, r, "/indexbestelling", 302)
+	} else {
+		http.Redirect(w, r, "/failed", 302)
+	}
+}
+
+func Failed(w http.ResponseWriter, r *http.Request){
+	tmpl.ExecuteTemplate(w, "Failed", nil)
 }

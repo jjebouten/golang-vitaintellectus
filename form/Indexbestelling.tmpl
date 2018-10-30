@@ -5,7 +5,6 @@
 <table border="1">
     <thead>
     <tr>
-    {{ printf "%#v" .  }}
 
         <td>bestelnummer</td>
         <td>status</td>
@@ -17,15 +16,15 @@
     </tr>
     </thead>
     <tbody>
-    {{ range .bestelling }}
+    {{ range . }}
     <tr>
-        {{/*<td>{{ .main.bestelling.bestelnummer }}</td>*/}}
-        {{/*<td>{{ .status }}</td>*/}}
-        {{/*<td>{{ .besteldatum }}</td>*/}}
-        {{/*<td>{{ .afbetaling_doorlooptijd }}</td>*/}}
-        {{/*<td>{{ .afbetaling_maandbedrag }}</td>*/}}
-        {{/*<td>{{ .klantnummer }}</td>*/}}
-        {{/*<td>{{ .verkoper }}</td>*/}}
+        <td>{{ .Bestelnummer }}</td>
+        <td>{{ .Status }}</td>
+        <td>{{ .Besteldatum }}</td>
+        <td>{{ .Afbetaling_doorlooptijd }}</td>
+        <td>{{ .Afbetaling_maandbedrag }}</td>
+        <td>{{ .Klantnummer }}</td>
+        <td>{{ .Verkoper }}</td>
     </tr>
     {{ end }}
     </tbody>

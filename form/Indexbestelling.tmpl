@@ -1,0 +1,34 @@
+{{ define "IndexBestelling" }}
+{{ template "Header" }}
+{{ template "Menu"  }}
+<h2> Registered </h2>
+<table border="1">
+    <thead>
+    <tr>
+    {{ printf "%#v" .  }}
+
+        <td>bestelnummer</td>
+        <td>status</td>
+        <td>besteldatum</td>
+        <td>afbetaling_doorlooptijd</td>
+        <td>afbetaling_maandbedrag</td>
+        <td>klantnummer</td>
+        <td>verkoper</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{ range .bestelling }}
+    <tr>
+        {{/*<td>{{ .main.bestelling.bestelnummer }}</td>*/}}
+        {{/*<td>{{ .status }}</td>*/}}
+        {{/*<td>{{ .besteldatum }}</td>*/}}
+        {{/*<td>{{ .afbetaling_doorlooptijd }}</td>*/}}
+        {{/*<td>{{ .afbetaling_maandbedrag }}</td>*/}}
+        {{/*<td>{{ .klantnummer }}</td>*/}}
+        {{/*<td>{{ .verkoper }}</td>*/}}
+    </tr>
+    {{ end }}
+    </tbody>
+</table>
+{{ template "Footer" }}
+{{ end }}

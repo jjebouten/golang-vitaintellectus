@@ -10,5 +10,5 @@ go run *.go
 
 ##Login example
 
-####username: Long
-####Password: 1951-08-30
+####username: Jansen
+####Password: 2018-05-21

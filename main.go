@@ -20,6 +20,7 @@ func main() {
 
 	//Login
 	http.HandleFunc("/", Login)
+	http.HandleFunc("/logout", Logout)
 	http.HandleFunc("/authenticate", Authenticate)
 	http.HandleFunc("/failed", Failed)
 

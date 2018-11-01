@@ -1,13 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"net/http"
 )
-
-type medewerker struct {
-	Naam      string
-	DatumInDienst string
-}
 
 var Loginsession = 0
 
@@ -28,13 +24,13 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 
 		medewerker := medewerker{}
 		for selDB.Next() {
-			var naam, datum_in_dienst string
+			var naam, datum_in_dienst sql.NullString
 			err = selDB.Scan(&naam, &datum_in_dienst)
 			if err != nil {
 				panic(err.Error())
 			}
 			medewerker.Naam = naam
-			medewerker.DatumInDienst = datum_in_dienst
+			medewerker.Datum_in_dienst = datum_in_dienst
 
 			Loginsession = 1
 

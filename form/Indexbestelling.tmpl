@@ -13,6 +13,7 @@
         <td>afbetaling_maandbedrag</td>
         <td>klantnummer</td>
         <td>verkoper</td>
+        <td>Bekijk bestelling</td>
     </tr>
     </thead>
     <tbody>
@@ -25,6 +26,7 @@
         <td>{{ .Afbetaling_maandbedrag }}</td>
         <td>{{ .Klantnummer }}</td>
         <td>{{ .Verkoper }}</td>
+        <td><a href="/bekijkbestelling?bestelnummer={{ .Bestelnummer }}&klantnr={{ .Klantnummer }}&verkoper={{ .Verkoper }}">View</a></td>
     </tr>
     {{ end }}
     </tbody>

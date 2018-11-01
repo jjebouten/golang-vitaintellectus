@@ -31,6 +31,9 @@ func main() {
 
 	//Klanten
 	http.HandleFunc("/indexklanten", IndexKlanten)
+	http.HandleFunc("/newklant", NewKlant)
+	http.HandleFunc("/insertklant", InsertKlant)
+
 
 
 	//Serve

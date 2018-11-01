@@ -21,7 +21,7 @@ type klant struct {
 	Inkomen               sql.NullInt64
 	Kredietregistratie    sql.NullString
 	Opleiding             sql.NullString
-	Opmerking             sql.NullString
+	Opmerkingen             sql.NullString
 }
 
 func getKlant(nKlantnummer int) []klant{
@@ -48,8 +48,8 @@ func getKlant(nKlantnummer int) []klant{
 		var inkomen sql.NullInt64
 		var kredietregistratie sql.NullString
 		var opleiding sql.NullString
-		var opmerking sql.NullString
-		err = selDB.Scan(&klantnummer, &naam, &voornaam, &postcode, &huisnummer, &huisnummer_toevoeging, &geboortedatum, &geslacht, &bloedgroep, &rhesusfactor, &beroepsrisicofactor, &inkomen, &kredietregistratie, &opleiding, &opmerking)
+		var opmerkingen sql.NullString
+		err = selDB.Scan(&klantnummer, &naam, &voornaam, &postcode, &huisnummer, &huisnummer_toevoeging, &geboortedatum, &geslacht, &bloedgroep, &rhesusfactor, &beroepsrisicofactor, &inkomen, &kredietregistratie, &opleiding, &opmerkingen)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -67,7 +67,7 @@ func getKlant(nKlantnummer int) []klant{
 		nKlant.Inkomen = inkomen
 		nKlant.Kredietregistratie = kredietregistratie
 		nKlant.Opleiding = opleiding
-		nKlant.Opmerking = opmerking
+		nKlant.Opmerkingen = opmerkingen
 
 		res = append(res, nKlant)
 
@@ -107,8 +107,8 @@ func IndexKlanten(w http.ResponseWriter, r *http.Request) {
 		var inkomen sql.NullInt64
 		var kredietregistratie sql.NullString
 		var opleiding sql.NullString
-		var opmerking sql.NullString
-		err = selDB.Scan(&klantnummer, &naam, &voornaam, &postcode, &huisnummer, &huisnummer_toevoeging, &geboortedatum, &geslacht, &bloedgroep, &rhesusfactor, &beroepsrisicofactor, &inkomen, &kredietregistratie, &opleiding, &opmerking)
+		var opmerkingen sql.NullString
+		err = selDB.Scan(&klantnummer, &naam, &voornaam, &postcode, &huisnummer, &huisnummer_toevoeging, &geboortedatum, &geslacht, &bloedgroep, &rhesusfactor, &beroepsrisicofactor, &inkomen, &kredietregistratie, &opleiding, &opmerkingen)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -126,7 +126,7 @@ func IndexKlanten(w http.ResponseWriter, r *http.Request) {
 		nKlant.Inkomen = inkomen
 		nKlant.Kredietregistratie = kredietregistratie
 		nKlant.Opleiding = opleiding
-		nKlant.Opmerking = opmerking
+		nKlant.Opmerkingen = opmerkingen
 
 		res = append(res, nKlant)
 	}
@@ -134,4 +134,37 @@ func IndexKlanten(w http.ResponseWriter, r *http.Request) {
 		log.Fatalln(err)
 	}
 	defer db.Close()
+}
+
+
+func NewKlant(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "Newklant", nil)
+}
+
+func InsertKlant(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	if r.Method == "POST" {
+		klantnummer := r.FormValue("klantnummer")
+		naam := r.FormValue("naam")
+		voornaam := r.FormValue("navoornaamme")
+		postcode := r.FormValue("postcode")
+		huisnummer := r.FormValue("huisnummer")
+		huisnummer_toevoeging := r.FormValue("huisnummer_toevoeging")
+		geboortedatum := r.FormValue("geboortedatum")
+		geslacht := r.FormValue("geslacht")
+		bloedgroep := r.FormValue("bloedgroep")
+		rhesusfactor := r.FormValue("rhesusfactor")
+		beroepsrisicofactor := r.FormValue("beroepsrisicofactor")
+		inkomen := r.FormValue("inkomen")
+		kredietregistratie := r.FormValue("kredietregistratie")
+		opleiding := r.FormValue("opleiding")
+		opmerkingen := r.FormValue("opmerkingen")
+		insForm, err := db.Prepare("INSERT INTO klant(klantnummer, naam, voornaam, postcode, huisnummer, huisnummer_toevoeging, geboortedatum, geslacht, bloedgroep, rhesusfactor, beroepsrisicofactor, inkomen, kredietregistratie, opleiding, opmerkingen) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+		if err != nil {
+			panic(err.Error())
+		}
+		insForm.Exec(klantnummer, naam, voornaam, postcode, huisnummer, huisnummer_toevoeging, geboortedatum, geslacht, bloedgroep, rhesusfactor, beroepsrisicofactor, inkomen, kredietregistratie, opleiding, opmerkingen)
+	}
+	defer db.Close()
+	http.Redirect(w, r, "/", 301)
 }

@@ -1,7 +1,7 @@
-{{ define "Bekijkbestelling" }}
+{{ define "Indexklanten" }}
 {{ template "Header" }}
 {{ template "Menu"  }}
-<h2> Bestelling </h2>
+<h2> Klanten </h2>
 <table border="1">
     <thead>
     <th>Klant informatie</th>
@@ -25,7 +25,7 @@
     </tr>
     </thead>
     <tbody>
-    {{ range .Klantinfo }}
+    {{ range . }}
     <tr>
         <td>{{ .Klantnummer.Value }}</td>
         <td>{{ .Naam.Value }}</td>
@@ -46,41 +46,5 @@
     {{ end }}
     </tbody>
 </table>
-
-        <br>
-
-<table border="1">
-    <thead>
-    <th>Medewerker informatie</th>
-    <tr>
-        <td>Medewerkersnummer</td>
-        <td>Naam</td>
-        <td>Voorletters</td>
-        <td>Functie</td>
-        <td>Fte</td>
-        <td>Datum_in_dienst</td>
-        <td>Postcode</td>
-        <td>Huisnummer</td>
-        <td>Huisnummer_toevoeging</td>
-
-    </tr>
-    </thead>
-    <tbody>
-    {{ range .Medewerkerinfo }}
-    <tr>
-        <td>{{ .Medewerkersnummer.Value }}</td>
-        <td>{{ .Naam.Value }}</td>
-        <td>{{ .Voorletters.Value }}</td>
-        <td>{{ .Functie.Value }}</td>
-        <td>{{ .Fte.Value }}</td>
-        <td>{{ .Datum_in_dienst.Value }}</td>
-        <td>{{ .Postcode.Value }}</td>
-        <td>{{ .Huisnummer.Value }}</td>
-        <td>{{ .Huisnummer_toevoeging.Value }}</td>
-    </tr>
-    {{ end }}
-    </tbody>
-</table>
 {{ template "Footer" }}
 {{ end }}
-

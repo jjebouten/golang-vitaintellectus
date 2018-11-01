@@ -29,6 +29,9 @@ func main() {
 	http.HandleFunc("/indexbestelling", IndexBestelling)
 	http.HandleFunc("/bekijkbestelling", BekijkBestelling)
 
+	//Klanten
+	http.HandleFunc("/indexklanten", IndexKlanten)
+
 
 	//Serve
 	http.ListenAndServe(":8898", nil)

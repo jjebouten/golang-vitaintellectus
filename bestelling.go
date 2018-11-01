@@ -24,6 +24,11 @@ type data struct {
 
 
 func IndexBestelling(w http.ResponseWriter, r *http.Request) {
+
+	if v := Loginsession; v == 0 {
+		http.Redirect(w, r, "/failed", 302)
+	}
+
 	db := dbConn()
 	selDB, err := db.Query("SELECT * FROM bestelling ORDER BY bestelnummer DESC")
 	if err != nil {
@@ -62,6 +67,11 @@ func IndexBestelling(w http.ResponseWriter, r *http.Request) {
 }
 
 func BekijkBestelling(w http.ResponseWriter, r *http.Request) {
+
+	if v := Loginsession; v == 0 {
+		http.Redirect(w, r, "/failed", 302)
+	}
+
 	db := dbConn()
 	nBestelnummer := r.URL.Query().Get("bestelnummer")
 	selDB, err := db.Query("SELECT klantnummer, verkoper FROM bestelling WHERE bestelnummer=?", nBestelnummer)

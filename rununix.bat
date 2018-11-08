@@ -1,1 +1,2 @@
+grunt
 go run *.go

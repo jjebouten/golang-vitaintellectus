@@ -107,3 +107,8 @@ func BekijkBestelling(w http.ResponseWriter, r *http.Request) {
 
 	defer db.Close()
 }
+
+
+func ServeNewBestelling(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "NewBestelling", nil)
+}

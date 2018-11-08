@@ -1,0 +1,79 @@
+.gradient() {
+	background: rgb(34,44,52);
+	background: -moz-linear-gradient(45deg,  rgba(34,44,52,1) 0%, rgba(64,76,87,1) 100%);
+	background: -webkit-linear-gradient(45deg,  rgba(34,44,52,1) 0%,rgba(64,76,87,1) 100%);
+	background: linear-gradient(45deg,  rgba(34,44,52,1) 0%,rgba(64,76,87,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#222c34', endColorstr='#404c57',GradientType=1 );
+}
+
+.rounded(@radius: 50%) {
+	-webkit-border-radius: @radius;
+	-moz-border-radius: @radius;
+	border-radius: @radius;
+}
+
+.opacity(@opacity: 0.5) {
+	-moz-opacity: @opacity;
+	-khtml-opacity: @opacity;
+	-webkit-opacity: @opacity;
+	opacity: @opacity;
+	@opperc: @opacity * 100;
+	-ms-filter: ~"progid:DXImageTransform.Microsoft.Alpha(opacity=@{opperc})";
+	filter: ~"alpha(opacity=@{opperc})";
+}
+
+.transform(...) {
+	-webkit-transform: @arguments;
+	-moz-transform: @arguments;
+	-o-transform: @arguments;
+	-ms-transform: @arguments;
+	transform: @arguments;
+}
+
+.rotation(@deg:5deg){
+  .transform(rotate(@deg));
+}
+
+.scale(@ratio:1.5){
+  .transform(scale(@ratio));
+}
+
+.transition(@argument: all, @duration:0.2s, @ease:ease-in-out) {
+	-webkit-transition: @argument @duration @ease;
+	-moz-transition: @argument @duration @ease;
+	-o-transition: @argument @duration @ease;
+	transition: @argument @duration @ease;
+}
+
+.box-shadow(@arguments) {
+	-webkit-box-shadow: @arguments;
+	-moz-box-shadow: @arguments;
+	box-shadow: @arguments;
+}
+
+.transitionfix() {
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0)
+}
+
+// Center a element within a relative container
+.center-vertical() {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
+.center-horizontal() {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.center-all(@value-x: 50%,@value-y: 50%) {
+	position: absolute;
+	left: @value-x;
+	top: @value-y;
+	transform: translate(-50%, -50%);
+}

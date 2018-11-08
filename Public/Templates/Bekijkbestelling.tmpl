@@ -1,0 +1,86 @@
+{{ define "Bekijkbestelling" }}
+{{ template "Header" }}
+{{ template "Menu"  }}
+<h2> Bestelling </h2>
+<table class="darkTable" border="1">
+    <thead>
+    <th>Klant informatie</th>
+    <tr>
+        <th>klantnummer</th>
+        <th>naam</th>
+        <th>voornaam</th>
+        <th>postcode</th>
+        <th>huisnummer</th>
+        <th>huisnummer_toevoeging</th>
+        <th>geboortedatum</th>
+        <th>geslacht</th>
+        <th>bloedgroep</th>
+        <th>rhesusfactor</th>
+        <th>beroepsrisicofactor</th>
+        <th>inkomen</th>
+        <th>kredietregistratie</th>
+        <th>opleiding</th>
+        <th>opmerkingen</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {{ range .Klantinfo }}
+    <tr>
+        <td>{{ .Klantnummer.Value }}</td>
+        <td>{{ .Naam.Value }}</td>
+        <td>{{ .Voornaam.Value }}</td>
+        <td>{{ .Postcode.Value }}</td>
+        <td>{{ .Huisnummer.Value }}</td>
+        <td>{{ .Huisnummer_toevoeging.Value }}</td>
+        <td>{{ .Geboortedatum.Value }}</td>
+        <td>{{ .Geslacht.Value }}</td>
+        <td>{{ .Bloedgroep.Value }}</td>
+        <td>{{ .Rhesusfactor.Value }}</td>
+        <td>{{ .Beroepsrisicofactor.Value }}</td>
+        <td>{{ .Inkomen.Value }}</td>
+        <td>{{ .Kredietregistratie.Value }}</td>
+        <td>{{ .Opleiding.Value }}</td>
+        <td>{{ .Opmerkingen.Value }}</td>
+    </tr>
+    {{ end }}
+    </tbody>
+</table>
+
+        <br>
+
+<table class="darkTable" border="1">
+    <thead>
+    <th>Medewerker informatie</th>
+    <tr>
+        <th>Medewerkersnummer</th>
+        <th>Naam</th>
+        <th>Voorletters</th>
+        <th>Functie</th>
+        <th>Fte</th>
+        <th>Datum_in_dienst</th>
+        <th>Postcode</th>
+        <th>Huisnummer</th>
+        <th>Huisnummer_toevoeging</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {{ range .Medewerkerinfo }}
+    <tr>
+        <td>{{ .Medewerkersnummer.Value }}</td>
+        <td>{{ .Naam.Value }}</td>
+        <td>{{ .Voorletters.Value }}</td>
+        <td>{{ .Functie.Value }}</td>
+        <td>{{ .Fte.Value }}</td>
+        <td>{{ .Datum_in_dienst.Value }}</td>
+        <td>{{ .Postcode.Value }}</td>
+        <td>{{ .Huisnummer.Value }}</td>
+        <td>{{ .Huisnummer_toevoeging.Value }}</td>
+    </tr>
+    {{ end }}
+    </tbody>
+</table>
+{{ template "Footer" }}
+{{ end }}
+

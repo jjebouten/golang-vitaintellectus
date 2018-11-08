@@ -1,0 +1,35 @@
+{{ define "IndexBestelling" }}
+{{ template "Header" }}
+{{ template "Menu"  }}
+<h2> Registered </h2>
+<table class="darkTable" border="1">
+    <thead>
+    <tr>
+
+        <th>bestelnummer</th>
+        <th>status</th>
+        <th>besteldatum</th>
+        <th>afbetaling_doorlooptijd</th>
+        <th>afbetaling_maandbedrag</th>
+        <th>klantnummer</th>
+        <th>verkoper</th>
+        <th>Bekijk bestelling</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{ range . }}
+    <tr>
+        <td>{{ .Bestelnummer }}</td>
+        <td>{{ .Status }}</td>
+        <td>{{ .Besteldatum }}</td>
+        <td>{{ .Afbetaling_doorlooptijd }}</td>
+        <td>{{ .Afbetaling_maandbedrag }}</td>
+        <td>{{ .Klantnummer }}</td>
+        <td>{{ .Verkoper }}</td>
+        <td><a href="/bekijkbestelling?bestelnummer={{ .Bestelnummer }}&klantnr={{ .Klantnummer }}&verkoper={{ .Verkoper }}">View</a></td>
+    </tr>
+    {{ end }}
+    </tbody>
+</table>
+{{ template "Footer" }}
+{{ end }}

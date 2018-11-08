@@ -1,0 +1,17 @@
+node_modules
+/vendor
+.idea
+composer.phar
+t3tools.phar
+config.codekit
+
+# local files excluded from versioning
+/mbox
+/backups
+/local_files
+/.env
+/typo3cms
+/phpunit
+/codecept
+/doctrine-dbal
+/Web/typo3conf/PackageStates.php

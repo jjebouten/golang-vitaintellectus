@@ -1,0 +1,42 @@
+div.share {
+  float: right;
+  a.fa {
+    color: #FFFFFF;
+    margin-right: 10px;
+    width: 32px;
+    line-height: 34px;
+    font-size: 1.8em;
+    text-align: center;
+    display: inline-block;
+    &:hover, &:active {
+      text-decoration: none !important;
+    }
+    &.fa-twitter {
+      background-color: @color-social-twitter;
+    }
+    &.fa-google-plus {
+      background: @color-social-googleplus;
+    }
+    &.fa-facebook {
+      background: @color-social-facebook;
+    }
+    &.fa-linkedin {
+      background: @color-social-linkedin;
+    }
+    &.fa-whatsapp {
+      background: @color-social-whatsapp;
+      @media (min-width: @screen-sm-min) {
+        display: none;
+      }
+    }
+    &.fa-envelope-o {
+      background: @color-social-email;
+    }
+    &.fa-print {
+      background: @color-social-print;
+      @media (max-width: @screen-sm-min) {
+        display: none;
+      }
+    }
+  }
+}

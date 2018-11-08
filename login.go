@@ -8,7 +8,12 @@ import (
 var Loginsession = 0
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "Login", nil)
+
+	if Loginsession == 1 {
+		http.Redirect(w, r, "/indexbestelling", 302)
+	} else {
+		tmpl.ExecuteTemplate(w, "Login", nil)
+	}
 }
 
 func Authenticate(w http.ResponseWriter, r *http.Request) {
@@ -16,6 +21,7 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		Pusername := r.FormValue("username")
 		Ppassword := r.FormValue("password")
+
 
 		selDB, err := db.Query("SELECT naam, datum_in_dienst FROM medewerker WHERE naam=? AND datum_in_dienst=?", Pusername, Ppassword)
 		if err != nil {
@@ -29,6 +35,7 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				panic(err.Error())
 			}
+
 			medewerker.Naam = naam
 			medewerker.Datum_in_dienst = datum_in_dienst
 

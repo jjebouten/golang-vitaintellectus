@@ -21,10 +21,10 @@ type klant struct {
 	Inkomen               sql.NullInt64
 	Kredietregistratie    sql.NullString
 	Opleiding             sql.NullString
-	Opmerkingen             sql.NullString
+	Opmerkingen           sql.NullString
 }
 
-func getKlant(nKlantnummer int) []klant{
+func getKlant(nKlantnummer int) []klant {
 
 	db := dbConn()
 	selDB, err := db.Query("SELECT * FROM klant WHERE klantnummer=?", nKlantnummer)
@@ -76,6 +76,29 @@ func getKlant(nKlantnummer int) []klant{
 	defer db.Close()
 	return res
 
+}
+
+func getMaxKlantNummer() int{
+
+	db := dbConn()
+	selDB, err := db.Query("SELECT MAX(klantnummer) FROM klant")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var klantnummer int
+
+	for selDB.Next() {
+		err = selDB.Scan(&klantnummer)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		klantnummer = (klantnummer + 1)
+	}
+
+	defer db.Close()
+	return klantnummer
 }
 
 func IndexKlanten(w http.ResponseWriter, r *http.Request) {
@@ -136,7 +159,6 @@ func IndexKlanten(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 
-
 func NewKlant(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "Newklant", nil)
 }
@@ -144,7 +166,9 @@ func NewKlant(w http.ResponseWriter, r *http.Request) {
 func InsertKlant(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	if r.Method == "POST" {
-		klantnummer := r.FormValue("klantnummer")
+		//var Maxklantnummer = klant{}
+		//Maxklantnummer = getMaxKlantNummer()
+		klantnummer := getMaxKlantNummer()
 		naam := r.FormValue("naam")
 		voornaam := r.FormValue("navoornaamme")
 		postcode := r.FormValue("postcode")
@@ -166,5 +190,5 @@ func InsertKlant(w http.ResponseWriter, r *http.Request) {
 		insForm.Exec(klantnummer, naam, voornaam, postcode, huisnummer, huisnummer_toevoeging, geboortedatum, geslacht, bloedgroep, rhesusfactor, beroepsrisicofactor, inkomen, kredietregistratie, opleiding, opmerkingen)
 	}
 	defer db.Close()
-	http.Redirect(w, r, "/", 301)
+	tmpl.ExecuteTemplate(w, "Succes", nil)
 }

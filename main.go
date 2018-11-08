@@ -14,16 +14,13 @@ var tmpl = template.Must(template.ParseGlob("form/*"))
 func main() {
 	log.Println("Server started on: http://localhost:8898")
 
-
 	//Call functions on URL
 
-
-	//Login
 	http.HandleFunc("/", Login)
+
 	http.HandleFunc("/logout", Logout)
 	http.HandleFunc("/authenticate", Authenticate)
 	http.HandleFunc("/failed", Failed)
-
 
 	//Bestelling
 	http.HandleFunc("/indexbestelling", IndexBestelling)
@@ -33,8 +30,6 @@ func main() {
 	http.HandleFunc("/indexklanten", IndexKlanten)
 	http.HandleFunc("/newklant", NewKlant)
 	http.HandleFunc("/insertklant", InsertKlant)
-
-
 
 	//Serve
 	http.ListenAndServe(":8898", nil)

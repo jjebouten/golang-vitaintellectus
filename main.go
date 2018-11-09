@@ -12,7 +12,7 @@ import (
 var tmpl = template.Must(template.ParseGlob("Public/Templates/*"))
 
 func main() {
-	log.Println("Server started on: http://localhost:8898")
+	log.Println("Server started on: http://localhost:8886")
 
 	//Handle folders for including css and javascript
 	http.Handle("/Public/", http.StripPrefix("/Public/", http.FileServer(http.Dir("Public"))))
@@ -40,5 +40,5 @@ func main() {
 	http.HandleFunc("/indexmodules", IndexModules)
 
 	//Serve
-	http.ListenAndServe(":8898", nil)
+	http.ListenAndServe(":8886", nil)
 }

@@ -191,7 +191,7 @@ func NieuweBestelling(w http.ResponseWriter, r *http.Request) {
 
 	//basis doorlooptijd =
 
-	Doorlooptijd(klantinfo, w , r)
+	doorlooptijd := Doorlooptijd(klantinfo)
 
 	//Formule
 
@@ -200,9 +200,11 @@ func NieuweBestelling(w http.ResponseWriter, r *http.Request) {
 	//totalprice = basismodule A + (optionele toevoegingen B t/m H)
 
 	//als totaalbedrag Q < (maandbedrag Z x doorlooptijd in maanden Y) = verkoop mag doorgaan.
+
+	Voldoetaaneisen(klantinfo, totalprice, doorlooptijd, w, r)
 }
 
-func Doorlooptijd(klantinfo []klant, w http.ResponseWriter, r *http.Request ) int {
+func Doorlooptijd(klantinfo []klant) int {
 
 	var doorlooptijd = 120
 
@@ -218,6 +220,7 @@ func Doorlooptijd(klantinfo []klant, w http.ResponseWriter, r *http.Request ) in
 		doorlooptijd = 55
 	}
 
+	//aftrek factor is 3 maanden x het beroepsrisico factor
 	var aftrekfactor int
 
 	beroepsrisico, err := strconv.Atoi((klantinfo[0].Beroepsrisicofactor.String))
@@ -227,14 +230,52 @@ func Doorlooptijd(klantinfo []klant, w http.ResponseWriter, r *http.Request ) in
 
 	doorlooptijd = doorlooptijd - aftrekfactor
 
+	//if kredietregistratie is true dan is doorlooptijd x 1.5 na de aftrek factor
+	if (klantinfo[0].Kredietregistratie.String == "J") {
+		doorlooptijd = doorlooptijd * 3
+		doorlooptijd = doorlooptijd / 2
+	}
+
+	log.Println(doorlooptijd)
+
+	return doorlooptijd
+
+}
+
+func Voldoetaaneisen(klantinfo []klant, totalekosten float64, doorlooptijd int, w http.ResponseWriter, r *http.Request) {
+
 	if doorlooptijd < 3 {
 		if err := tmpl.ExecuteTemplate(w, "Doorlooptijd", doorlooptijd); err != nil {
 			log.Fatalln(err)
 		}
 	}
 
-	log.Println(doorlooptijd)
+	inkomen := klantinfo[0].Inkomen.Int64
 
-	return doorlooptijd
+	inkomenx := float64(inkomen)
+	doorlooptijdx := float64(doorlooptijd)
+
+	inkomenx = inkomenx * 0.2
+
+	maandbedrag := inkomenx / doorlooptijdx
+
+	totaleopbreng := maandbedrag * doorlooptijdx
+
+	log.Println(totalekosten)
+	log.Println(totaleopbreng)
+
+	//20% van inkomen
+
+	if totalekosten < totaleopbreng {
+		if err := tmpl.ExecuteTemplate(w, "Totaleopbreng", totaleopbreng); err != nil {
+			log.Fatalln(err)
+		}
+	}
+
+	if err := tmpl.ExecuteTemplate(w, "Totaleopbreng", totaleopbreng); err != nil {
+		log.Fatalln(err)
+	}
+
+	//TODO als het mag de bestelling opslaan en nog doen incombinatie met nieuwe klant
 
 }

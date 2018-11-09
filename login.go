@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"net/http"
 )
 
@@ -28,16 +27,12 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 			panic(err.Error())
 		}
 
-		medewerker := medewerker{}
+		nMedewerker := medewerker{}
 		for selDB.Next() {
-			var naam, datum_in_dienst sql.NullString
-			err = selDB.Scan(&naam, &datum_in_dienst)
+			err = selDB.Scan(&nMedewerker.Naam, &nMedewerker.Datum_in_dienst)
 			if err != nil {
 				panic(err.Error())
 			}
-
-			medewerker.Naam = naam
-			medewerker.Datum_in_dienst = datum_in_dienst
 
 			Loginsession = 1
 

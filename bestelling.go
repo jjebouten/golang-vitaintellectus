@@ -17,11 +17,9 @@ type bestelling struct {
 }
 
 type data struct {
-	Klantinfo []klant
+	Klantinfo      []klant
 	Medewerkerinfo []medewerker
 }
-
-
 
 func IndexBestelling(w http.ResponseWriter, r *http.Request) {
 
@@ -31,34 +29,21 @@ func IndexBestelling(w http.ResponseWriter, r *http.Request) {
 
 	db := dbConn()
 	selDB, err := db.Query("SELECT * FROM bestelling ORDER BY bestelnummer DESC")
+
 	if err != nil {
 		panic(err.Error())
 	}
-	order := bestelling{}
+	nOrder := bestelling{}
 	res := []bestelling{}
 
 	for selDB.Next() {
-		var bestelnummer int
-		var status string
-		var besteldatum string
-		var afbetaling_doorlooptijd int
-		var afbetaling_maandbedrag float64
-		var klantnummer int
-		var verkoper int
-		err = selDB.Scan(&bestelnummer, &status, &besteldatum, &afbetaling_doorlooptijd, &afbetaling_maandbedrag, &klantnummer, &verkoper)
+		err = selDB.Scan(&nOrder.Bestelnummer, &nOrder.Status, &nOrder.Besteldatum, &nOrder.Afbetaling_doorlooptijd,
+			&nOrder.Afbetaling_maandbedrag, &nOrder.Klantnummer, &nOrder.Verkoper)
 		if err != nil {
 			panic(err.Error())
 		}
-		order.Bestelnummer = bestelnummer
 
-		order.Status = status
-		order.Besteldatum = besteldatum
-		order.Afbetaling_doorlooptijd = afbetaling_doorlooptijd
-		order.Afbetaling_maandbedrag = afbetaling_maandbedrag
-		order.Klantnummer = klantnummer
-		order.Verkoper = verkoper
-
-		res = append(res, order)
+		res = append(res, nOrder)
 	}
 	if err := tmpl.ExecuteTemplate(w, "IndexBestelling", res); err != nil {
 		log.Fatalln(err)
@@ -79,11 +64,8 @@ func BekijkBestelling(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-
-
-	klantinfo :=[]klant{}
-	medewerkerinfo :=[]medewerker{}
-
+	klantinfo := []klant{}
+	medewerkerinfo := []medewerker{}
 	data := data{}
 
 	for selDB.Next() {
@@ -98,7 +80,6 @@ func BekijkBestelling(w http.ResponseWriter, r *http.Request) {
 
 		data.Klantinfo = klantinfo
 		data.Medewerkerinfo = medewerkerinfo
-
 	}
 
 	if err := tmpl.ExecuteTemplate(w, "Bekijkbestelling", data); err != nil {
@@ -107,7 +88,6 @@ func BekijkBestelling(w http.ResponseWriter, r *http.Request) {
 
 	defer db.Close()
 }
-
 
 func ServeNewBestelling(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "NewBestelling", nil)

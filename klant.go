@@ -31,54 +31,27 @@ func getKlant(nKlantnummer int) []klant {
 	if err != nil {
 		panic(err.Error())
 	}
+
 	nKlant := klant{}
 	res := []klant{}
+
 	for selDB.Next() {
-		var klantnummer sql.NullInt64
-		var naam sql.NullString
-		var voornaam sql.NullString
-		var postcode sql.NullString
-		var huisnummer sql.NullInt64
-		var huisnummer_toevoeging sql.NullString
-		var geboortedatum sql.NullString
-		var geslacht sql.NullString
-		var bloedgroep sql.NullString
-		var rhesusfactor sql.NullString
-		var beroepsrisicofactor sql.NullString
-		var inkomen sql.NullInt64
-		var kredietregistratie sql.NullString
-		var opleiding sql.NullString
-		var opmerkingen sql.NullString
-		err = selDB.Scan(&klantnummer, &naam, &voornaam, &postcode, &huisnummer, &huisnummer_toevoeging, &geboortedatum, &geslacht, &bloedgroep, &rhesusfactor, &beroepsrisicofactor, &inkomen, &kredietregistratie, &opleiding, &opmerkingen)
+		err = selDB.Scan(&nKlant.Klantnummer, &nKlant.Naam, &nKlant.Voornaam, &nKlant.Postcode, &nKlant.Huisnummer,
+			&nKlant.Huisnummer_toevoeging, &nKlant.Geboortedatum, &nKlant.Geslacht, &nKlant.Bloedgroep,
+			&nKlant.Rhesusfactor, &nKlant.Beroepsrisicofactor, &nKlant.Inkomen, &nKlant.Kredietregistratie,
+			&nKlant.Opleiding, &nKlant.Opmerkingen)
+
 		if err != nil {
 			panic(err.Error())
 		}
-		nKlant.Klantnummer = klantnummer
-		nKlant.Naam = naam
-		nKlant.Voornaam = voornaam
-		nKlant.Postcode = postcode
-		nKlant.Huisnummer = huisnummer
-		nKlant.Huisnummer_toevoeging = huisnummer_toevoeging
-		nKlant.Geboortedatum = geboortedatum
-		nKlant.Geslacht = geslacht
-		nKlant.Bloedgroep = bloedgroep
-		nKlant.Rhesusfactor = rhesusfactor
-		nKlant.Beroepsrisicofactor = beroepsrisicofactor
-		nKlant.Inkomen = inkomen
-		nKlant.Kredietregistratie = kredietregistratie
-		nKlant.Opleiding = opleiding
-		nKlant.Opmerkingen = opmerkingen
-
 		res = append(res, nKlant)
 
 	}
-
 	defer db.Close()
 	return res
-
 }
 
-func getMaxKlantNummer() int{
+func getMaxKlantNummer() int {
 
 	db := dbConn()
 	selDB, err := db.Query("SELECT MAX(klantnummer) FROM klant")
@@ -116,41 +89,14 @@ func IndexKlanten(w http.ResponseWriter, r *http.Request) {
 	res := []klant{}
 
 	for selDB.Next() {
-		var klantnummer sql.NullInt64
-		var naam sql.NullString
-		var voornaam sql.NullString
-		var postcode sql.NullString
-		var huisnummer sql.NullInt64
-		var huisnummer_toevoeging sql.NullString
-		var geboortedatum sql.NullString
-		var geslacht sql.NullString
-		var bloedgroep sql.NullString
-		var rhesusfactor sql.NullString
-		var beroepsrisicofactor sql.NullString
-		var inkomen sql.NullInt64
-		var kredietregistratie sql.NullString
-		var opleiding sql.NullString
-		var opmerkingen sql.NullString
-		err = selDB.Scan(&klantnummer, &naam, &voornaam, &postcode, &huisnummer, &huisnummer_toevoeging, &geboortedatum, &geslacht, &bloedgroep, &rhesusfactor, &beroepsrisicofactor, &inkomen, &kredietregistratie, &opleiding, &opmerkingen)
+		err = selDB.Scan(&nKlant.Klantnummer, &nKlant.Naam, &nKlant.Voornaam, &nKlant.Postcode, &nKlant.Huisnummer,
+			&nKlant.Huisnummer_toevoeging, &nKlant.Geboortedatum, &nKlant.Geslacht, &nKlant.Bloedgroep,
+			&nKlant.Rhesusfactor, &nKlant.Beroepsrisicofactor, &nKlant.Inkomen, &nKlant.Kredietregistratie,
+			&nKlant.Opleiding, &nKlant.Opmerkingen)
+
 		if err != nil {
 			panic(err.Error())
 		}
-		nKlant.Klantnummer = klantnummer
-		nKlant.Naam = naam
-		nKlant.Voornaam = voornaam
-		nKlant.Postcode = postcode
-		nKlant.Huisnummer = huisnummer
-		nKlant.Huisnummer_toevoeging = huisnummer_toevoeging
-		nKlant.Geboortedatum = geboortedatum
-		nKlant.Geslacht = geslacht
-		nKlant.Bloedgroep = bloedgroep
-		nKlant.Rhesusfactor = rhesusfactor
-		nKlant.Beroepsrisicofactor = beroepsrisicofactor
-		nKlant.Inkomen = inkomen
-		nKlant.Kredietregistratie = kredietregistratie
-		nKlant.Opleiding = opleiding
-		nKlant.Opmerkingen = opmerkingen
-
 		res = append(res, nKlant)
 	}
 	if err := tmpl.ExecuteTemplate(w, "Indexklanten", res); err != nil {
@@ -166,8 +112,6 @@ func NewKlant(w http.ResponseWriter, r *http.Request) {
 func InsertKlant(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	if r.Method == "POST" {
-		//var Maxklantnummer = klant{}
-		//Maxklantnummer = getMaxKlantNummer()
 		klantnummer := getMaxKlantNummer()
 		naam := r.FormValue("naam")
 		voornaam := r.FormValue("navoornaamme")

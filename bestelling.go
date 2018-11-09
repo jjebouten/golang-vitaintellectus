@@ -4,6 +4,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type bestelling struct {
@@ -19,6 +20,7 @@ type bestelling struct {
 type data struct {
 	Klantinfo      []klant
 	Medewerkerinfo []medewerker
+	Moduleinfo     []module
 }
 
 func IndexBestelling(w http.ResponseWriter, r *http.Request) {
@@ -90,5 +92,149 @@ func BekijkBestelling(w http.ResponseWriter, r *http.Request) {
 }
 
 func ServeNewBestelling(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "NewBestelling", nil)
+
+	data := data{}
+
+	data.Klantinfo = getExistingKlanten()
+	//medewerkerid = setidbijinloggen?()
+	data.Moduleinfo = getExistingModules()
+
+	if err := tmpl.ExecuteTemplate(w, "NewBestelling", data); err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func getExistingKlanten() []klant {
+
+	db := dbConn()
+	selDB, err := db.Query("SELECT klantnummer, naam FROM klant ORDER BY klantnummer DESC")
+	if err != nil {
+		panic(err.Error())
+	}
+	nKlant := klant{}
+	res := []klant{}
+
+	for selDB.Next() {
+		err = selDB.Scan(&nKlant.Klantnummer, &nKlant.Naam)
+
+		if err != nil {
+			panic(err.Error())
+		}
+		res = append(res, nKlant)
+	}
+
+	defer db.Close()
+	return res
+}
+
+func getExistingModules() []module {
+
+	db := dbConn()
+	selDB, err := db.Query("SELECT * FROM module WHERE modulenaam not like 'basis'")
+	if err != nil {
+		panic(err.Error())
+	}
+	nModule := module{}
+	res := []module{}
+
+	for selDB.Next() {
+		err = selDB.Scan(&nModule.Modulenaam, &nModule.Omschrijving, &nModule.Stukprijs)
+
+		if err != nil {
+			panic(err.Error())
+		}
+		res = append(res, nModule)
+	}
+	defer db.Close()
+	return res
+}
+
+func NieuweBestelling(w http.ResponseWriter, r *http.Request) {
+
+	var price []string
+
+	price = append(price, r.FormValue("basis"))
+	price = append(price, r.FormValue("Cor"))
+	price = append(price, r.FormValue("Dermal"))
+	price = append(price, r.FormValue("Memoria"))
+	price = append(price, r.FormValue("Oculus"))
+	price = append(price, r.FormValue("Oricula"))
+	price = append(price, r.FormValue("Pes"))
+	price = append(price, r.FormValue("Sanguis"))
+	price = append(price, r.FormValue("Somnus"))
+
+	var numbers []float64
+
+	for _, elem := range price {
+		i, err := strconv.ParseFloat(elem, 64)
+		if err == nil {
+			numbers = append(numbers, i)
+		}
+	}
+
+	//Count all number of selected modules
+	totalprice := 0.00
+	for i := 0; i < len(numbers); i++ {
+		totalprice = totalprice + numbers[i]
+	}
+
+	var klantinfo = []klant{}
+
+	klantnummer, err := strconv.Atoi(r.FormValue("Klantnummer"))
+	if err == nil {
+		klantinfo = getKlant(klantnummer)
+	}
+
+	//AGE hebben we
+
+	//Totaal bedrag hebben we
+
+	//basis doorlooptijd =
+
+	Doorlooptijd(klantinfo, w , r)
+
+	//Formule
+
+	//maandbedrag Z = inkomen per jaar (x0.2) X / doorlooptijd in maanden Y
+
+	//totalprice = basismodule A + (optionele toevoegingen B t/m H)
+
+	//als totaalbedrag Q < (maandbedrag Z x doorlooptijd in maanden Y) = verkoop mag doorgaan.
+}
+
+func Doorlooptijd(klantinfo []klant, w http.ResponseWriter, r *http.Request ) int {
+
+	var doorlooptijd = 120
+
+	age := getAge(klantinfo)
+	log.Println(doorlooptijd)
+
+	log.Println(age)
+
+	if age >= 45 && age <= 55 {
+		doorlooptijd = 90
+	}
+	if age > 55 {
+		doorlooptijd = 55
+	}
+
+	var aftrekfactor int
+
+	beroepsrisico, err := strconv.Atoi((klantinfo[0].Beroepsrisicofactor.String))
+	if err == nil {
+		aftrekfactor = beroepsrisico * 3
+	}
+
+	doorlooptijd = doorlooptijd - aftrekfactor
+
+	if doorlooptijd < 3 {
+		if err := tmpl.ExecuteTemplate(w, "Doorlooptijd", doorlooptijd); err != nil {
+			log.Fatalln(err)
+		}
+	}
+
+	log.Println(doorlooptijd)
+
+	return doorlooptijd
+
 }

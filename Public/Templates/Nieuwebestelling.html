@@ -3,22 +3,41 @@
 {{ template "Menu" }}
 <h2>Nieuwe bestelling</h2>
 
-<button id="newcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met nieuwe klant</button>
-<button id="existingcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met bestaande klant</button>
+<div class="row">
+    <div class="col-md-6">
+        <button id="newcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met nieuwe klant</button>
+    </div>
+    <div class="col-md-6">
+        <button id="existingcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met bestaande klant</button>
+    </div>
+</div>
 
 <div class="newcustomer">
-todo
-
-    nieuwe klant
-
-
+    Nieuwe klant
 </div>
 
 
 <div class="existingcustomer">
 
-    todo
-    bestaande klant
+
+    <form method="POST" action="insertorderexistingcustomer">
+        <label> Klant </label>
+        <select name="Klantnummer">
+        {{ range .Klantinfo }}
+            <option value="{{ .Klantnummer.Value }}">{{ .Klantnummer.Value }} {{ .Naam.Value }}</option>
+        {{ end }}
+        </select>
+        <br/>
+
+        {{ range .Moduleinfo }}
+        <input type="checkbox" name="{{ .Modulenaam }}" value="{{ .Stukprijs }}"><label>{{ .Modulenaam }} Prijs :{{ .Stukprijs }},- </label>
+        {{ end }}
+        <input type="checkbox" name="basis" value="35495.00" checked><label>Basis Prijs: 35495.00</label>
+
+        <input type="submit" value="Bestelling bekijken"/>
+    </form>
+
+
 </div>
 
 {{ template "Footer" }}

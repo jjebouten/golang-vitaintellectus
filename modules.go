@@ -1,15 +1,14 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"net/http"
 )
 
 type module struct {
-	Modulenaam   sql.NullString
-	Omschrijving sql.NullString
-	Stukprijs    sql.NullString
+	Modulenaam   string
+	Omschrijving string
+	Stukprijs    string
 }
 
 

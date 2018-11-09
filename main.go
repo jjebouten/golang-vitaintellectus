@@ -29,6 +29,7 @@ func main() {
 	//Bestelling
 	http.HandleFunc("/indexbestelling", IndexBestelling)
 	http.HandleFunc("/bekijkbestelling", BekijkBestelling)
+	http.HandleFunc("/insertorderexistingcustomer", NieuweBestelling)
 
 	//Klanten
 	http.HandleFunc("/indexklanten", IndexKlanten)

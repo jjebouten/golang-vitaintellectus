@@ -35,6 +35,9 @@ func main() {
 	http.HandleFunc("/newklant", NewKlant)
 	http.HandleFunc("/insertklant", InsertKlant)
 
+	//Module
+	http.HandleFunc("/indexmodules", IndexModules)
+
 	//Serve
 	http.ListenAndServe(":8898", nil)
 }

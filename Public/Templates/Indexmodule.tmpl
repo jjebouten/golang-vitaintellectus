@@ -1,0 +1,26 @@
+{{ define "Indexmodules" }}
+{{ template "Header" }}
+{{ template "Menu"  }}
+<h2> Modules </h2>
+<table class="darkTable" border="1">
+    <thead>
+    <th>Module informatie</th>
+    <tr>
+        <th>Module naam</th>
+        <th>Omschrijving</th>
+        <th>Stukprijs</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    {{ range . }}
+    <tr>
+        <td>{{ .Modulenaam.Value }}</td>
+        <td>{{ .Omschrijving.Value }}</td>
+        <td>{{ .Stukprijs.Value }}</td>
+    </tr>
+    {{ end }}
+    </tbody>
+</table>
+{{ template "Footer" }}
+{{ end }}

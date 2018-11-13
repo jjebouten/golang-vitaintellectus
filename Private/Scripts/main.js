@@ -40,5 +40,10 @@ $(document).ready(function () {
         $("#existingcustomer").removeClass('btn-success');
         $("#existingcustomer").addClass('btn-warning');
 
-    })
+    });
+
+    $('.dataTable').DataTable({
+        "scrollX": true
+    });
+
 });

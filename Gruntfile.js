@@ -12,25 +12,6 @@ module.exports = function (grunt) {
                     ],
                     dest: 'Public/Scripts/main.min.js'
                 },
-                compress: {
-                    src: [
-                        'Private/Scripts/Vendor/jquery.1.12.1.min.js',
-                        'Private/Scripts/Vendor/Bootstrap/tooltip.js',
-                        'Private/Scripts/Vendor/Bootstrap/affix.js',
-                        'Private/Scripts/Vendor/Bootstrap/alert.js',
-                        'Private/Scripts/Vendor/Bootstrap/button.js',
-                        'Private/Scripts/Vendor/Bootstrap/carousel.js',
-                        'Private/Scripts/Vendor/Bootstrap/collapse.js',
-                        'Private/Scripts/Vendor/Bootstrap/dropdown.js',
-                        'Private/Scripts/Vendor/Bootstrap/modal.js',
-                        'Private/Scripts/Vendor/Bootstrap/popover.js',
-                        'Private/Scripts/Vendor/Bootstrap/scrollspy.js',
-                        'Private/Scripts/Vendor/Bootstrap/tab.js',
-                        'Private/Scripts/Vendor/Bootstrap/transition.js',
-                        'Private/Scripts/track-clicks.js'
-                    ],
-                    dest: 'Public/Scripts/compress.min.js'
-                }
             },
             less: {
                 main: {
@@ -78,7 +59,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('js-main', 'Concatenates and minify main javascript file', ['uglify:main']);
-    grunt.registerTask('js-compress', 'Concatenates and minify vendor javascript file', ['uglify:compress']);
 
     // deprecated/legacy
     grunt.registerTask('javascript-main', 'Concatenates and minify main javascript file', ['uglify:main']);

@@ -3,7 +3,7 @@
 {{ template "Menu" }}
 <h2>Nieuwe bestelling</h2>
 <div class="row">
-    <div class="col-12 mb-5">    
+    <div class="col-12 mb-5">
         <div class="row">
             <div class="col-md-6">
                 <button id="newcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met nieuwe klant</button>
@@ -18,7 +18,7 @@
         <div class="newcustomer">
             <h3>Nieuwe klant</h3>
         </div>
-        
+
         <div class="existingcustomer">
             <form method="POST" action="insertorderexistingcustomer">
                 <div class="form-group">
@@ -29,16 +29,19 @@
                         {{ end }}
                     </select>
                 </div>
-                
+
                 {{ range .Moduleinfo }}
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="{{ .Modulenaam }}" value="{{ .Stukprijs }}" class="custom-control-input"><label class="custom-control-label">{{ .Modulenaam }} Prijs :{{ .Stukprijs }},- </label>
-                </div>
+
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" name="{{ .Modulenaam }}" value="{{ .Stukprijs }}" class="custom-control-input" >
+                        <span class="custom-control-label">{{ .Modulenaam }} Prijs :{{ .Stukprijs }},-</span></label>
+
                 {{ end }}
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" name="basis" value="35495.00" class="custom-control-input" checked><label class="custom-control-label">Basis Prijs: 35495.00</label>
-                </div>
-                
+
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" name="basis" value="35495.00" class="custom-control-input" >
+                    <span class="custom-control-label">Basis Prijs: 35495.00</span></label>
+
                 <input type="submit" class="btn btn-primary mt-3" value="Bestelling bekijken"/>
             </form>
         </div>

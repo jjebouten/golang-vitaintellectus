@@ -1,26 +1,32 @@
 {{ define "Indexmodules" }}
 {{ template "Header" }}
-{{ template "Menu"  }}
-<h2> Modules </h2>
-<table class="darkTable" border="1">
-    <thead>
-    <th>Module informatie</th>
-    <tr>
-        <th>Module naam</th>
-        <th>Omschrijving</th>
-        <th>Stukprijs</th>
+{{ template "Menu" }}
+<div class="row">
+    <div class="col-12 mb-5">
+        <h2> Modules </h2>
+        <p class="text-secondary">Module informatie</p>
+    </div>
+    <div class="col-12">
+        <table class="table table-sm table-hover dataTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Module naam</th>
+                    <th>Omschrijving</th>
+                    <th>Stukprijs</th>
 
-    </tr>
-    </thead>
-    <tbody>
-    {{ range . }}
-    <tr>
-        <td>{{ .Modulenaam }}</td>
-        <td>{{ .Omschrijving }}</td>
-        <td>{{ .Stukprijs }}</td>
-    </tr>
-    {{ end }}
-    </tbody>
-</table>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range . }}
+                <tr>
+                    <td>{{ .Modulenaam }}</td>
+                    <td>{{ .Omschrijving }}</td>
+                    <td>{{ .Stukprijs }}</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
 {{ template "Footer" }}
 {{ end }}

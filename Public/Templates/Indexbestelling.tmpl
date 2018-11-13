@@ -1,35 +1,42 @@
 {{ define "IndexBestelling" }}
 {{ template "Header" }}
-{{ template "Menu"  }}
-<h2> Registered </h2>
-<table class="darkTable" border="1">
-    <thead>
-    <tr>
+{{ template "Menu" }}
+<div class="row">
+    <div class="col-12 mb-5">
+        <h2> Registered </h2>
+    </div>
+    <div class="col-12">
+        <table class="table table-sm table-hover dataTable">
+            <thead class="thead-dark">
+                <tr>
 
-        <th>bestelnummer</th>
-        <th>status</th>
-        <th>besteldatum</th>
-        <th>afbetaling_doorlooptijd</th>
-        <th>afbetaling_maandbedrag</th>
-        <th>klantnummer</th>
-        <th>verkoper</th>
-        <th>Bekijk bestelling</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{ range . }}
-    <tr>
-        <td>{{ .Bestelnummer }}</td>
-        <td>{{ .Status }}</td>
-        <td>{{ .Besteldatum }}</td>
-        <td>{{ .Afbetaling_doorlooptijd }}</td>
-        <td>{{ .Afbetaling_maandbedrag }}</td>
-        <td>{{ .Klantnummer }}</td>
-        <td>{{ .Verkoper }}</td>
-        <td><a href="/bekijkbestelling?bestelnummer={{ .Bestelnummer }}&klantnr={{ .Klantnummer }}&verkoper={{ .Verkoper }}">View</a></td>
-    </tr>
-    {{ end }}
-    </tbody>
-</table>
+                    <th>bestelnummer</th>
+                    <th>status</th>
+                    <th>besteldatum</th>
+                    <th>afbetaling_doorlooptijd</th>
+                    <th>afbetaling_maandbedrag</th>
+                    <th>klantnummer</th>
+                    <th>verkoper</th>
+                    <th>Bekijk bestelling</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range . }}
+                <tr>
+                    <td>{{ .Bestelnummer }}</td>
+                    <td>{{ .Status }}</td>
+                    <td>{{ .Besteldatum }}</td>
+                    <td>{{ .Afbetaling_doorlooptijd }}</td>
+                    <td>{{ .Afbetaling_maandbedrag }}</td>
+                    <td>{{ .Klantnummer }}</td>
+                    <td>{{ .Verkoper }}</td>
+                    <td><a href="/bekijkbestelling?bestelnummer={{ .Bestelnummer }}&klantnr={{ .Klantnummer }}&verkoper={{ .Verkoper }}"
+                            class="btn btn-link fas fa-eye"></a></td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
 {{ template "Footer" }}
 {{ end }}

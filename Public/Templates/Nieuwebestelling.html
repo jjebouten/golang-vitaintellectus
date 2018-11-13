@@ -2,43 +2,47 @@
 {{ template "Header" }}
 {{ template "Menu" }}
 <h2>Nieuwe bestelling</h2>
-
 <div class="row">
-    <div class="col-md-6">
-        <button id="newcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met nieuwe klant</button>
+    <div class="col-12 mb-5">    
+        <div class="row">
+            <div class="col-md-6">
+                <button id="newcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met nieuwe klant</button>
+            </div>
+            <div class="col-md-6">
+                <button id="existingcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met bestaande klant</button>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6">
-        <button id="existingcustomer" class="btn btn-warning bigTarget">Nieuwe bestelling met bestaande klant</button>
+
+    <div class="col-12">
+        <div class="newcustomer">
+            <h3>Nieuwe klant</h3>
+        </div>
+        
+        <div class="existingcustomer">
+            <form method="POST" action="insertorderexistingcustomer">
+                <div class="form-group">
+                    <label> Klant </label>
+                    <select class="form-control" name="Klantnummer">
+                        {{ range .Klantinfo }}
+                        <option value="{{ .Klantnummer.Value }}">{{ .Klantnummer.Value }} {{ .Naam.Value }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+                
+                {{ range .Moduleinfo }}
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="{{ .Modulenaam }}" value="{{ .Stukprijs }}" class="custom-control-input"><label class="custom-control-label">{{ .Modulenaam }} Prijs :{{ .Stukprijs }},- </label>
+                </div>
+                {{ end }}
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" name="basis" value="35495.00" class="custom-control-input" checked><label class="custom-control-label">Basis Prijs: 35495.00</label>
+                </div>
+                
+                <input type="submit" class="btn btn-primary mt-3" value="Bestelling bekijken"/>
+            </form>
+        </div>
     </div>
 </div>
-
-<div class="newcustomer">
-    Nieuwe klant
-</div>
-
-
-<div class="existingcustomer">
-
-
-    <form method="POST" action="insertorderexistingcustomer">
-        <label> Klant </label>
-        <select name="Klantnummer">
-        {{ range .Klantinfo }}
-            <option value="{{ .Klantnummer.Value }}">{{ .Klantnummer.Value }} {{ .Naam.Value }}</option>
-        {{ end }}
-        </select>
-        <br/>
-
-        {{ range .Moduleinfo }}
-        <input type="checkbox" name="{{ .Modulenaam }}" value="{{ .Stukprijs }}"><label>{{ .Modulenaam }} Prijs :{{ .Stukprijs }},- </label>
-        {{ end }}
-        <input type="checkbox" name="basis" value="35495.00" checked><label>Basis Prijs: 35495.00</label>
-
-        <input type="submit" value="Bestelling bekijken"/>
-    </form>
-
-
-</div>
-
 {{ template "Footer" }}
 {{ end }}

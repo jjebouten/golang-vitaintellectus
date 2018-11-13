@@ -1,8 +1,35 @@
 {{ define "Menu" }}
-<a href="/logout">Log out</a> |
-<a href="/newklant">Nieuwe Klant</a>
-<a href="/indexbestelling">Alle bestellingen</a>
-<a href="/indexklanten">Alle klanten</a>
-<a href="/indexmodules">Alle modules</a>
-<a href="/newbestelling">Nieuwe Bestelling</a>
+<div class="row mb-5">
+    <div class="col-12">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="/indexbestelling">Dashboard</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/newklant">Nieuwe Klant</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/indexbestelling">Alle bestellingen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/indexklanten">Alle klanten</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/indexmodules">Alle modules</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/newbestelling">Nieuwe Bestelling</a>
+                        </li>
+                    </ul>
+                    <div class="form-inline my-2 my-lg-0">
+                        <a href="/logout" class="btn btn-outline-danger my-2 my-sm-0">Log out</a>
+                    </div>
+                </div>
+            </nav>
+    </div>
+</div>
 {{ end }}

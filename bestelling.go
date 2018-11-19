@@ -3,6 +3,7 @@ package main
 import (
 	_ "github.com/go-sql-driver/mysql"
 	"log"
+	"math"
 	"net/http"
 	"strconv"
 )
@@ -22,6 +23,14 @@ type data struct {
 	Medewerkerinfo []medewerker
 	Moduleinfo     []module
 	Bestellinginfo []bestelling
+	Besteldata     []besteldata
+}
+
+type besteldata struct {
+	Totalekosten    float64
+	Totaleopbrengst float64
+	Betaalbaar      float64
+	Doorlooptijd    int
 }
 
 func IndexBestelling(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +220,6 @@ func Doorlooptijd(klantinfo []klant) int {
 
 	age := getAge(klantinfo)
 
-
 	if age >= 45 && age <= 55 {
 		doorlooptijd = 90
 	}
@@ -234,7 +242,6 @@ func Doorlooptijd(klantinfo []klant) int {
 		doorlooptijd = doorlooptijd * 3
 		doorlooptijd = doorlooptijd / 2
 	}
-
 
 	return doorlooptijd
 
@@ -260,25 +267,37 @@ func Voldoetaaneisen(klantinfo []klant, totalekosten float64, doorlooptijd int, 
 	totaleopbreng := maandbedrag * doorlooptijdx
 
 	betaalbaar := totalekosten - totaleopbreng
+	betaalbaar = (math.Floor(betaalbaar*100) / 100) //(round down 2 digs)
+	totaleopbreng = (math.Floor(totaleopbreng*100) / 100) //(round down 2 digs)
+
+	Besteldatax := besteldata{}
+
+	data := data{}
+
+	Besteldatax.Betaalbaar = betaalbaar
+	Besteldatax.Totaleopbrengst = totaleopbreng
+	Besteldatax.Totalekosten = totalekosten
+	Besteldatax.Doorlooptijd = doorlooptijd
+
+	data.Besteldata = append(data.Besteldata, Besteldatax)
+
+	data.Klantinfo = klantinfo
 
 	//20% van inkomen
-log.Println(totalekosten)
-log.Println(totaleopbreng)
 	if totalekosten > totaleopbreng {
-		if err := tmpl.ExecuteTemplate(w, "Totaleopbreng", betaalbaar); err != nil {
+		if err := tmpl.ExecuteTemplate(w, "Totaleopbreng", Besteldatax); err != nil {
 			log.Fatalln(err)
 		}
 	} else {
-		Besteldata(klantinfo, totalekosten, doorlooptijd, maandbedrag)
+		if err := tmpl.ExecuteTemplate(w, "Bestellingpreview", data); err != nil {
+			log.Fatalln(err)
+		}
 	}
 
 	//TODO als het mag de bestelling opslaan en nog doen incombinatie met nieuwe klant
 
 }
 
-func Besteldata(klantinfo []klant, totalekosten float64, doorlooptijd int, maandbedrag float64) {
-	data := data{}
-	data.Klantinfo = klantinfo
+func Besteldatapreview(data data) {
 
-	log.Println(data)
 }

@@ -1,0 +1,117 @@
+{{ define "Bestellingpreview" }}
+{{ template "Header" }}
+{{ template "Menu"  }}
+<a href="/">Terug</a>
+
+{{/*<td>{{ .Klantnummer.Value }}</td>*/}}
+
+<form method="POST" action="placebestelling">
+    <div class="row">
+    <div class="col-6">
+    {{ range .Klantinfo }}
+        <div class="form-group">
+            <label> naam </label>
+            <input type="text" class="form-control" name="nummer" value="{{ .Klantnummer.Value }}" readonly/>
+        </div>
+        <div class="form-group">
+            <label> naam </label>
+            <input type="text" class="form-control" name="naam" value="{{ .Naam.Value}}" readonly/>
+        </div>
+        <div class="form-group">
+            <label> voornaam </label>
+            <input type="text" class="form-control" name="voornaam" value="{{ .Voornaam.Value}}" readonly/>
+        </div>
+        <div class="form-group">
+            <label> postcode </label>
+            <input type="text" class="form-control" name="postcode" value="{{ .Postcode.Value}}" readonly/>
+        </div>
+        <div class="form-group">
+            <label> huisnummer </label>
+            <input type="number" class="form-control" name="huisnummer" value="{{ .Huisnummer.Value}}"
+                   readonly/>
+        </div>
+        <div class="form-group">
+            <label> huisnummer_toevoeging </label>
+            <input type="text" class="form-control" name="huisnummer_toevoeging"
+                   value="{{ .Huisnummer_toevoeging.Value}}"
+                   readonly/>
+        </div>
+        <div class="form-group">
+            <label> geboortedatum </label>
+            <input type="date" class="form-control" name="geboortedatum" value="{{ .Geboortedatum.Value}}"
+                   readonly/>
+        </div>
+        <div class="form-group">
+            <label> geslacht </label>
+            <input type="text" class="form-control" name="geslacht" value="{{ .Geslacht.Value}}" readonly/>
+        </div>
+    </div>
+        <div class="col-6">
+            <div class="form-group">
+                <label> bloedgroep </label>
+                <input type="text" class="form-control" name="bloedgroep" value="{{ .Bloedgroep.Value}}" readonly/>
+            </div>
+            <div class="form-group">
+                <label> rhesusfactor </label>
+                <input type="text" class="form-control" name="rhesusfactor" value="{{ .Rhesusfactor.Value}}"
+                       readonly/>
+            </div>
+            <div class="form-group">
+                <label> beroepsrisicofactor </label>
+                <input type="text" class="form-control" name="beroepsrisicofactor"
+                       value="{{ .Beroepsrisicofactor.Value}}"
+                       readonly/>
+            </div>
+            <div class="form-group">
+                <label> inkomen </label>
+                <input type="text" class="form-control" name="inkomen" value="{{ .Inkomen.Value}}" readonly/>
+            </div>
+            <div class="form-group">
+                <label> kredietregistratie </label>
+                <input type="text" class="form-control" name="kredietregistratie" value="{{ .Kredietregistratie.Value}}"
+                       readonly/>
+            </div>
+            <div class="form-group">
+                <label> opleiding </label>
+                <input type="text" class="form-control" name="opleiding" value="{{ .Opleiding.Value}}" readonly/>
+            </div>
+            <div class="form-group">
+                <label> opmerkingen </label>
+                <input type="text" class="form-control" name="opmerkingen" value="{{ .Opmerkingen.Value}}" readonly/>
+            </div>
+        </div>
+    {{ end }}
+    {{ range .Besteldata }}
+
+            <div class="col-12">
+                <h3>Kosten</h3>
+            </div>
+        <div class="col-6">
+
+            <div class="form-group">
+                <label> Totaleopbrengst </label>
+                <input type="text" class="form-control" name="opmerkingen" value="&euro; {{ .Totaleopbrengst}},-"
+                       readonly/>
+            </div>
+            <div class="form-group">
+                <label> Totalekosten </label>
+                <input type="text" class="form-control" name="opmerkingen" value="&euro; {{ .Totalekosten}},-"
+                       readonly/>
+            </div>
+            <div class="form-group">
+                <label> Doorlooptijd in maanden</label>
+                <input type="text" class="form-control" name="opmerkingen" value="{{ .Doorlooptijd}} Maanden" readonly/>
+            </div>
+        </div>
+    {{ end }}
+
+
+        <div class="col-12">
+            <input type="submit" class="btn btn-primary" value="Add order"/>
+        </div>
+    </div>
+</form>
+
+
+{{ template "Footer" }}
+{{ end }}

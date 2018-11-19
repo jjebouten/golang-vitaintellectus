@@ -3,7 +3,31 @@
 {{ template "Menu"  }}
 <a href="/"> Probeer nog maals</a>
 
-<h3>De totale opbreng van de klant - zijn inkomen zijn totale kosten is -{{ . }},- euro te weinig. Dit is onvoldoende om de bestelling te plaatsen.</h3>
+<p>De totale opbrengst van de klant is te weinig.
+
+<table class="table table-sm table-hover dataTable">
+    <tr>
+        <td>Totalekosten</td>
+        <td> &euro; {{ .Totalekosten }},-</td>
+    </tr>
+
+    <tr>
+        <td>Totaleopbrengst</td>
+        <td> &euro; {{ .Totaleopbrengst }},-</td>
+    </tr>
+
+    <tr>
+        <td>Min</td>
+        <td> __________________</td>
+    </tr>
+
+    <tr>
+        <td>Uitkomst</td>
+        <td> &euro; -{{ .Betaalbaar }},-</td>
+
+    </tr>
+</table>
+
 
 {{ template "Footer" }}
 {{ end }}

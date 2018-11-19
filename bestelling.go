@@ -21,6 +21,7 @@ type data struct {
 	Klantinfo      []klant
 	Medewerkerinfo []medewerker
 	Moduleinfo     []module
+	Bestellinginfo []bestelling
 }
 
 func IndexBestelling(w http.ResponseWriter, r *http.Request) {
@@ -209,9 +210,7 @@ func Doorlooptijd(klantinfo []klant) int {
 	var doorlooptijd = 120
 
 	age := getAge(klantinfo)
-	log.Println(doorlooptijd)
 
-	log.Println(age)
 
 	if age >= 45 && age <= 55 {
 		doorlooptijd = 90
@@ -236,7 +235,6 @@ func Doorlooptijd(klantinfo []klant) int {
 		doorlooptijd = doorlooptijd / 2
 	}
 
-	log.Println(doorlooptijd)
 
 	return doorlooptijd
 
@@ -261,21 +259,26 @@ func Voldoetaaneisen(klantinfo []klant, totalekosten float64, doorlooptijd int, 
 
 	totaleopbreng := maandbedrag * doorlooptijdx
 
-	log.Println(totalekosten)
-	log.Println(totaleopbreng)
+	betaalbaar := totalekosten - totaleopbreng
 
 	//20% van inkomen
-
-	if totalekosten < totaleopbreng {
-		if err := tmpl.ExecuteTemplate(w, "Totaleopbreng", totaleopbreng); err != nil {
+log.Println(totalekosten)
+log.Println(totaleopbreng)
+	if totalekosten > totaleopbreng {
+		if err := tmpl.ExecuteTemplate(w, "Totaleopbreng", betaalbaar); err != nil {
 			log.Fatalln(err)
 		}
-	}
-
-	if err := tmpl.ExecuteTemplate(w, "Totaleopbreng", totaleopbreng); err != nil {
-		log.Fatalln(err)
+	} else {
+		Besteldata(klantinfo, totalekosten, doorlooptijd, maandbedrag)
 	}
 
 	//TODO als het mag de bestelling opslaan en nog doen incombinatie met nieuwe klant
 
+}
+
+func Besteldata(klantinfo []klant, totalekosten float64, doorlooptijd int, maandbedrag float64) {
+	data := data{}
+	data.Klantinfo = klantinfo
+
+	log.Println(data)
 }

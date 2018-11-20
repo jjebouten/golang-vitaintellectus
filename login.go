@@ -1,10 +1,12 @@
 package main
 
 import (
+
 	"net/http"
 )
 
 var Loginsession = 0
+var Medewerkersnummer = int64(0)
 
 func Login(w http.ResponseWriter, r *http.Request) {
 
@@ -22,20 +24,20 @@ func Authenticate(w http.ResponseWriter, r *http.Request) {
 		Ppassword := r.FormValue("password")
 
 
-		selDB, err := db.Query("SELECT naam, datum_in_dienst FROM medewerker WHERE naam=? AND datum_in_dienst=?", Pusername, Ppassword)
+		selDB, err := db.Query("SELECT medewerkernummer, naam, datum_in_dienst FROM medewerker WHERE naam=? AND datum_in_dienst=?", Pusername, Ppassword)
 		if err != nil {
 			panic(err.Error())
 		}
 
 		nMedewerker := medewerker{}
 		for selDB.Next() {
-			err = selDB.Scan(&nMedewerker.Naam, &nMedewerker.Datum_in_dienst)
+			err = selDB.Scan(&nMedewerker.Medewerkersnummer, &nMedewerker.Naam, &nMedewerker.Datum_in_dienst)
 			if err != nil {
 				panic(err.Error())
 			}
 
 			Loginsession = 1
-
+			Medewerkersnummer = nMedewerker.Medewerkersnummer.Int64
 		}
 
 	}

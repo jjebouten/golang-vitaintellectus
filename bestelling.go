@@ -6,6 +6,7 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 type bestelling struct {
@@ -31,6 +32,7 @@ type besteldata struct {
 	Totaleopbrengst float64
 	Betaalbaar      float64
 	Doorlooptijd    int
+	Maandbedrag     float64
 }
 
 func IndexBestelling(w http.ResponseWriter, r *http.Request) {
@@ -267,7 +269,8 @@ func Voldoetaaneisen(klantinfo []klant, totalekosten float64, doorlooptijd int, 
 	totaleopbreng := maandbedrag * doorlooptijdx
 
 	betaalbaar := totalekosten - totaleopbreng
-	betaalbaar = (math.Floor(betaalbaar*100) / 100) //(round down 2 digs)
+	betaalbaar = (math.Floor(betaalbaar*100) / 100)       //(round down 2 digs)
+	maandbedrag = (math.Floor(maandbedrag*100) / 100)       //(round down 2 digs)
 	totaleopbreng = (math.Floor(totaleopbreng*100) / 100) //(round down 2 digs)
 
 	Besteldatax := besteldata{}
@@ -278,6 +281,7 @@ func Voldoetaaneisen(klantinfo []klant, totalekosten float64, doorlooptijd int, 
 	Besteldatax.Totaleopbrengst = totaleopbreng
 	Besteldatax.Totalekosten = totalekosten
 	Besteldatax.Doorlooptijd = doorlooptijd
+	Besteldatax.Maandbedrag = maandbedrag
 
 	data.Besteldata = append(data.Besteldata, Besteldatax)
 
@@ -298,6 +302,47 @@ func Voldoetaaneisen(klantinfo []klant, totalekosten float64, doorlooptijd int, 
 
 }
 
-func Besteldatapreview(data data) {
+func PlaceBestelling(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	if r.Method == "POST" {
+		bestelnummer := getMaxBestelNummer()
+		status := "AKK"
+		current_time := time.Now().Local()
+		besteldatum := current_time.Format("2006-01-02")
+		afbetaling_doorlooptijd := r.FormValue("doorlooptijd")
+		afbetaling_maandbedrag := r.FormValue("maandbedrag")
+		log.Println(afbetaling_maandbedrag)
+		klantnummer := r.FormValue("klantnummer")
+		verkoper := Medewerkersnummer
+		insForm, err := db.Prepare("INSERT INTO `bestelling` (`bestelnummer`, `status`, `besteldatum`, `afbetaling_doorlooptijd`, `afbetaling_maandbedrag`, `klantnummer`, `verkoper`) VALUES (?,?,?,?,?,?,?)")
+		if err != nil {
+			panic(err.Error())
+		}
+		insForm.Exec(bestelnummer, status, besteldatum, afbetaling_doorlooptijd, afbetaling_maandbedrag, klantnummer, verkoper)
+	}
+	defer db.Close()
+	tmpl.ExecuteTemplate(w, "Succes", nil)
+}
 
+func getMaxBestelNummer() int {
+
+	db := dbConn()
+	selDB, err := db.Query("SELECT MAX(bestelnummer) FROM bestelling")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var bestelnummer int
+
+	for selDB.Next() {
+		err = selDB.Scan(&bestelnummer)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		bestelnummer = (bestelnummer + 1)
+	}
+
+	defer db.Close()
+	return bestelnummer
 }

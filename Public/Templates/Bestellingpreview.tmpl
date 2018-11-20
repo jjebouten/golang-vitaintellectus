@@ -3,15 +3,13 @@
 {{ template "Menu"  }}
 <a href="/">Terug</a>
 
-{{/*<td>{{ .Klantnummer.Value }}</td>*/}}
-
 <form method="POST" action="placebestelling">
     <div class="row">
     <div class="col-6">
     {{ range .Klantinfo }}
         <div class="form-group">
             <label> naam </label>
-            <input type="text" class="form-control" name="nummer" value="{{ .Klantnummer.Value }}" readonly/>
+            <input type="text" class="form-control" name="klantnummer" value="{{ .Klantnummer.Value }}" readonly/>
         </div>
         <div class="form-group">
             <label> naam </label>
@@ -90,17 +88,21 @@
 
             <div class="form-group">
                 <label> Totaleopbrengst </label>
-                <input type="text" class="form-control" name="opmerkingen" value="&euro; {{ .Totaleopbrengst}},-"
+                <input type="text" class="form-control" name="totaleopbrengst" value="&euro; {{ .Totaleopbrengst}},-"
                        readonly/>
             </div>
             <div class="form-group">
                 <label> Totalekosten </label>
-                <input type="text" class="form-control" name="opmerkingen" value="&euro; {{ .Totalekosten}},-"
+                <input type="text" class="form-control" name="totalekosten" value="&euro; {{ .Totalekosten}},-"
                        readonly/>
             </div>
             <div class="form-group">
                 <label> Doorlooptijd in maanden</label>
-                <input type="text" class="form-control" name="opmerkingen" value="{{ .Doorlooptijd}} Maanden" readonly/>
+                <input type="text" class="form-control" name="doorlooptijd" value="{{ .Doorlooptijd}} Maanden" readonly/>
+            </div>
+            <div class="form-group">
+                <label> Maand bedrag in euro's</label>
+                <input type="text" class="form-control" name="maandbedrag" value="{{ .Maandbedrag}}" readonly/>
             </div>
         </div>
     {{ end }}

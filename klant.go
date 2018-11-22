@@ -114,7 +114,7 @@ func InsertKlant(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		klantnummer := getMaxKlantNummer()
 		naam := r.FormValue("naam")
-		voornaam := r.FormValue("navoornaamme")
+		voornaam := r.FormValue("voornaam")
 		postcode := r.FormValue("postcode")
 		huisnummer := r.FormValue("huisnummer")
 		huisnummer_toevoeging := r.FormValue("huisnummer_toevoeging")
